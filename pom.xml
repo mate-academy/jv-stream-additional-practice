@@ -44,6 +44,7 @@
                     <encoding>UTF-8</encoding>
                     <consoleOutput>true</consoleOutput>
                     <failsOnError>true</failsOnError>
+                    <includeTestResources>true</includeTestResources>
                     <linkXRef>false</linkXRef>
                 </configuration>
             </plugin>
