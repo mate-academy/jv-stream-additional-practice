@@ -6,10 +6,10 @@ import java.util.Objects;
 
 public class People {
 
-    private String name;
-    private int age;
-    private Sex sex;
-    private List<Cat> catList;
+    private final String name;
+    private final int age;
+    private final Sex sex;
+    private final List<Cat> catList;
 
     public People(String name, int age, Sex sex) {
         this.name = name;

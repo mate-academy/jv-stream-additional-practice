@@ -4,8 +4,8 @@ import java.util.Objects;
 
 public class Cat {
 
-    private String name;
-    private int age;
+    private final String name;
+    private final int age;
 
     public Cat(String name, int age) {
         this.name = name;
