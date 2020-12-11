@@ -1,7 +1,5 @@
 package practice;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import model.Candidate;
 import model.Cat;
 import model.People;
@@ -9,12 +7,16 @@ import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 
 public class StreamPracticeTest {
     @Rule
