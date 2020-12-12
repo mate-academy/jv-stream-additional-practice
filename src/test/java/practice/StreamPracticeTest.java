@@ -1,5 +1,6 @@
 package practice;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import model.Candidate;
@@ -15,6 +16,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.function.Predicate;
 
 public class StreamPracticeTest {
     @Rule
@@ -197,6 +199,13 @@ public class StreamPracticeTest {
         expectedEx.expect(RuntimeException.class);
         expectedEx.expectMessage("Can't get min value from list");
         solution.findMinEvenNumber(basicInput);
+    }
+
+    @Test
+    public void validateCandidates_validatePredicate() {
+        CandidateValidator validator = new CandidateValidator();
+        assertEquals(true, validator instanceof Predicate, "Your CandidateValidator should "
+            + "implement functional interface Predicate, so it can be easily reused in the code");
     }
 
     @Test
