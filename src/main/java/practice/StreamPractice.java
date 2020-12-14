@@ -1,8 +1,10 @@
 package practice;
 
-import java.util.Collections;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import model.Candidate;
 import model.People;
 
@@ -13,7 +15,11 @@ public class StreamPractice {
      * {"099:Johny", "120:Brad", ...} return the age of the oldest person
      */
     public long getOldestPersonAge(List<String> peoples) {
-        return 0;
+        return peoples.stream()
+                .map(string -> string.split(":"))
+                .map(strings -> Long.parseLong(strings[0]))
+                .max(Long::compare)
+                .get();
     }
 
     /**
@@ -24,7 +30,12 @@ public class StreamPractice {
      * Output : {"Sun.ltd", "Odyssey"}
      */
     public List<String> getCompanies(Map<String, Integer> input) {
-        return Collections.EMPTY_LIST;
+        return input.entrySet()
+                .stream()
+                .filter(entry -> entry.getValue() > 0)
+                .sorted(Map.Entry.comparingByKey())
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -33,7 +44,12 @@ public class StreamPractice {
      * passed with the second input param - 'increment'
      */
     public String charsIncrementation(String string, int increment) {
-        return string;
+        return string.chars()
+                .map(character -> character + increment)
+                .collect(StringBuilder::new,
+                        StringBuilder::appendCodePoint,
+                        StringBuilder::append)
+                .toString();
     }
 
     /**
@@ -47,7 +63,9 @@ public class StreamPractice {
      * [100001]
      */
     public String convertAndModifyNumbers(List<Integer> numbers) {
-        return "";
+        return numbers.stream()
+                .map(Integer::toBinaryString)
+                .collect(Collectors.joining("],\n[", "[", "]"));
     }
 
     /**
@@ -59,7 +77,11 @@ public class StreamPractice {
      * will be generated. Result shouldn't count duplicates.
      */
     public long getVisitorsPerYear(List<String> records, int year) {
-        return 0;
+        return records.stream()
+                .distinct()
+                .map(record -> record.split(" - "))
+                .filter(strings -> Integer.parseInt(strings[1]) == year)
+                .count();
     }
 
     /**
@@ -70,7 +92,13 @@ public class StreamPractice {
      * "Can't get min value from list"
      */
     public int findMinEvenNumber(List<String> numbers) {
-        return 0;
+        return numbers.stream()
+                .flatMap((number) -> Arrays.stream(number.split(",")))
+                .map(Integer::parseInt)
+                .filter(number -> (number & 1) == 0)
+                .sorted()
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Can't get min value from list"));
     }
 
     /**
@@ -78,13 +106,18 @@ public class StreamPractice {
      * has Candidate.class type. Check which candidates are eligible to apply for president
      * position and return their names sorted alphabetically. The requirements are: person
      * should be older than 35 y, should be allowed to vote, have nationality - 'Ukrainian'
-     * and live in urk for 10 years. For the last requirement use field periodsInUkr, which
+     * and live in ukr for 10 years. For the last requirement use field periodsInUkr, which
      * has following view: "2002-2015" For now we don't care if that was last 10 or not. We
      * want to reuse our validation in future, so let's write our own impl of
      * Predicate< Candidate> in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-        return Collections.EMPTY_LIST;
+        CandidateValidator candidateValidator = new CandidateValidator();
+        return candidates.stream()
+                .filter(candidateValidator)
+                .map(Candidate::getName)
+                .sorted()
+                .collect(Collectors.toList());
     }
 
     /**
@@ -92,7 +125,9 @@ public class StreamPractice {
      * string. If last numbers is not a letter skip the word.
      */
     public Map<Character, List<String>> groupWordsByLastChar(List<String> words) {
-        return Collections.EMPTY_MAP;
+        return words.stream()
+                .filter(string -> Character.isAlphabetic(string.charAt(string.length() - 1)))
+                .collect(Collectors.groupingBy((string) -> string.charAt(string.length() - 1)));
     }
 
     /**
@@ -102,7 +137,11 @@ public class StreamPractice {
      * 21 - List.of(person3, person7, ...);
      */
     public Map<Integer, List<People>> groupByAge(List<People> people) {
-        return Collections.EMPTY_MAP;
+        return people.stream()
+                .filter(person -> person.getAge() >= 18
+                        && (person.getSex()).equals(People.Sex.WOMEN)
+                        && person.getCatList().size() > 0)
+                .collect(Collectors.groupingBy(People::getAge));
     }
 
     /**
@@ -110,6 +149,10 @@ public class StreamPractice {
      * numbers that can be divided by 5 without a remainder.
      */
     public List<Integer> filterAndReverse(int[] inputNumbers) {
-        return Collections.EMPTY_LIST;
+        return Arrays.stream(inputNumbers)
+                .boxed()
+                .sorted(Comparator.reverseOrder())
+                .filter(number -> number % 5 == 0)
+                .collect(Collectors.toList());
     }
 }
